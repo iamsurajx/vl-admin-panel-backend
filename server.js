@@ -15,17 +15,20 @@ connectDB();
 // Initialize Express app
 const app = express();
 
-// CORS configuration
-const corsOptions = {
-  origin: 'http://localhost:5173', // Allow requests from this origin
-  methods: ['GET', 'POST'], // Allow GET and POST requests
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow certain headers
-};
 
 // Middleware
 app.use(helmet());
-app.use(cors(corsOptions));
+
 app.use(express.json());
+
+
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://ventureloop.vercel.app"], // Allow only this origin
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // Rate Limiting to prevent brute-force attacks
 const limiter = rateLimit({
